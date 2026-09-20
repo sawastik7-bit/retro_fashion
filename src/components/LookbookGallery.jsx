@@ -1,4 +1,5 @@
-import { motion } from 'framer-motion';
+import { useEffect, useRef } from 'react';
+import { animate, stagger, onScroll } from 'animejs';
 import Onomatopoeia from './Onomatopoeia';
 import ComicPanel from './ComicPanel';
 
@@ -48,36 +49,60 @@ const GALLERY = [
 ];
 
 export default function LookbookGallery() {
+  const headerRef = useRef(null);
+  const gridRef = useRef(null);
+
+  useEffect(() => {
+    if (!headerRef.current) return;
+    const els = headerRef.current.querySelectorAll('[data-reveal]');
+    if (!els.length) return;
+    const anim = animate(els, {
+      translateY: [30, 0],
+      duration: 600,
+      delay: stagger(100),
+      ease: 'easeOutCubic',
+    });
+    const cancel = onScroll(anim, { container: window, enter: 'top bottom+=50', once: true });
+    return () => { anim.cancel(); cancel?.(); };
+  }, []);
+
+  useEffect(() => {
+    if (!gridRef.current) return;
+    const items = gridRef.current.querySelectorAll('.gallery-item');
+    if (!items.length) return;
+    const anim = animate(items, {
+      translateY: [40, 0],
+      scale: [0.96, 1],
+      duration: 500,
+      delay: stagger(70),
+      ease: 'easeOutCubic',
+    });
+    const cancel = onScroll(anim, { container: window, enter: 'top bottom+=40', once: true });
+    return () => { anim.cancel(); cancel?.(); };
+  }, []);
+
   return (
     <section className="relative py-20 md:py-32 px-4 overflow-hidden" data-cursor="default">
       <div className="absolute inset-0 halftone-yellow opacity-5" />
 
       <div className="max-w-7xl mx-auto">
-        <div className="mb-12 md:mb-16 relative">
-          <Onomatopoeia text="ZAP!" className="text-3xl md:text-5xl mb-4 inline-block" />
-          <ComicPanel className="inline-block p-4 md:p-6 bg-punk-black ml-4" delay={0.2}>
+        <div ref={headerRef} className="mb-12 md:mb-16 relative">
+          <div data-reveal><Onomatopoeia text="ZAP!" className="text-3xl md:text-5xl mb-4 inline-block" /></div>
+          <div data-reveal><ComicPanel className="inline-block p-4 md:p-6 bg-punk-black ml-4" delay={0.2}>
             <h2 className="font-display text-4xl md:text-6xl lg:text-7xl tracking-wide text-punk-white">
               LOOKBOOK
             </h2>
-          </ComicPanel>
-          <p className="mt-4 text-punk-white/50 text-lg max-w-md">
+          </ComicPanel></div>
+          <p data-reveal className="mt-4 text-punk-white/50 text-lg max-w-md">
             The vibe. The energy. The people who wear it.
           </p>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 auto-rows-[200px] md:auto-rows-[250px]">
-          {GALLERY.map((item, i) => (
-            <motion.div
+        <div ref={gridRef} className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 auto-rows-[200px] md:auto-rows-[250px]">
+          {GALLERY.map((item) => (
+            <div
               key={item.id}
-              className={`${item.span} relative group overflow-hidden comic-panel-wobble`}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{
-                duration: 0.5,
-                delay: i * 0.08,
-                ease: [0.16, 1, 0.3, 1],
-              }}
+              className={`gallery-item ${item.span} relative group overflow-hidden comic-panel-wobble`}
               data-cursor="product"
             >
               <img
@@ -96,7 +121,7 @@ export default function LookbookGallery() {
               <div className="absolute top-2 right-2 jagged-bubble bg-punk-yellow text-punk-black text-[9px] px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                 {item.label}
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>

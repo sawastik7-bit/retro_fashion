@@ -1,10 +1,25 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
+import { animate, onScroll } from 'animejs';
 import ComicPanel from './ComicPanel';
 import SpeechBubble from './SpeechBubble';
 
 export default function Newsletter() {
   const [submitted, setSubmitted] = useState(false);
+  const sectionRef = useRef(null);
+
+  useEffect(() => {
+    if (!sectionRef.current) return;
+    const els = sectionRef.current.querySelectorAll('[data-reveal]');
+    if (!els.length) return;
+    const anim = animate(els, {
+      translateY: [30, 0],
+      duration: 600,
+      ease: 'easeOutCubic',
+    });
+    const cancel = onScroll(anim, { container: window, enter: 'top bottom+=50', once: true });
+    return () => { anim.cancel(); cancel?.(); };
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -12,15 +27,15 @@ export default function Newsletter() {
   };
 
   return (
-    <section className="relative py-20 md:py-32 px-4 overflow-hidden" data-cursor="default">
+    <section ref={sectionRef} className="relative py-20 md:py-32 px-4 overflow-hidden" data-cursor="default">
       <div className="absolute inset-0 halftone-yellow opacity-5" />
 
       <div className="max-w-3xl mx-auto text-center">
-        <SpeechBubble variant="yellow" className="inline-block text-sm px-6 py-2 mb-6">
+        <div data-reveal><SpeechBubble variant="yellow" className="inline-block text-sm px-6 py-2 mb-6">
           STAY CONNECTED
-        </SpeechBubble>
+        </SpeechBubble></div>
 
-        <ComicPanel className="p-8 md:p-12 bg-punk-black" delay={0.2}>
+        <div data-reveal><ComicPanel className="p-8 md:p-12 bg-punk-black" delay={0.2}>
           <h2 className="font-display text-3xl md:text-5xl tracking-wide text-punk-white mb-4">
             JOIN THE <span className="text-punk-pink">RIOT</span>
           </h2>
@@ -61,7 +76,7 @@ export default function Newsletter() {
               </motion.button>
             </form>
           )}
-        </ComicPanel>
+        </ComicPanel></div>
       </div>
     </section>
   );
