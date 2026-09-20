@@ -13,6 +13,7 @@ import About from './components/About';
 import Newsletter from './components/Newsletter';
 import Footer from './components/Footer';
 import CustomCursor from './components/CustomCursor';
+import LiquidEther from './components/LiquidEther';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -45,6 +46,20 @@ function App() {
 
   return (
     <div className="relative min-h-screen bg-punk-black overflow-x-hidden">
+      {/* Liquid Ether background */}
+      <div className="fixed inset-0 z-0">
+        <LiquidEther
+          colors={['#ff2d6b', '#ffd600', '#1d3557']}
+          mouseForce={15}
+          cursorSize={120}
+          resolution={0.4}
+          autoDemo={true}
+          autoSpeed={0.4}
+          autoIntensity={1.8}
+          BFECC={true}
+        />
+      </div>
+
       <CustomCursor />
       <Navbar />
 
