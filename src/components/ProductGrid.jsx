@@ -53,6 +53,7 @@ const PRODUCTS = [
 export default function ProductGrid() {
   const [cartItems, setCartItems] = useState([]);
   const [showCartImpact, setShowCartImpact] = useState(false);
+  const [isDragOver, setIsDragOver] = useState(false);
 
   const handleDragToCart = useCallback((product) => {
     setCartItems((prev) => [...prev, product]);
@@ -60,12 +61,32 @@ export default function ProductGrid() {
     setTimeout(() => setShowCartImpact(false), 600);
   }, []);
 
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    setIsDragOver(true);
+  };
+
+  const handleDragLeave = () => {
+    setIsDragOver(false);
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    setIsDragOver(false);
+    try {
+      const productData = e.dataTransfer.getData('text/plain');
+      const product = JSON.parse(productData);
+      handleDragToCart(product);
+    } catch (err) {
+      console.error('Drop error:', err);
+    }
+  };
+
   return (
     <section className="relative py-20 md:py-32 px-4 overflow-hidden" data-cursor="default">
-      {/* Background halftone */}
       <div className="absolute inset-0 halftone-pink opacity-5" />
 
-      {/* Decorations */}
       <div className="section-decorations">
         <ComicStarburst className="absolute top-[8%] right-[5%] hidden md:block" size={50} color="#ffd600" delay={0.3} text="NEW" />
         <InkSplat className="absolute bottom-[12%] left-[3%] hidden lg:block" size={65} delay={0.5} />
@@ -75,7 +96,6 @@ export default function ProductGrid() {
       </div>
 
       <div className="max-w-7xl mx-auto">
-        {/* Section header */}
         <div className="mb-16 relative">
           <Onomatopoeia text="BOOM!" className="absolute -top-4 -left-2 md:left-4 text-3xl md:text-5xl" />
           <ComicPanel className="inline-block p-4 md:p-6 bg-punk-black" delay={0.2}>
@@ -88,7 +108,6 @@ export default function ProductGrid() {
           </p>
         </div>
 
-        {/* Product grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
           {PRODUCTS.map((product, i) => (
             <ProductCard
@@ -100,9 +119,11 @@ export default function ProductGrid() {
           ))}
         </div>
 
-        {/* Cart zone */}
         <motion.div
-          className="mt-12 cart-zone p-6 text-center relative"
+          className={`mt-12 cart-zone p-6 text-center relative ${isDragOver ? 'cart-zone-active' : ''}`}
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+          onDrop={handleDrop}
           animate={showCartImpact ? {
             scale: [1, 1.03, 1],
             borderColor: ['#ff2d6b', '#ffd600', '#ff2d6b'],
@@ -126,7 +147,6 @@ export default function ProductGrid() {
             )}
           </div>
 
-          {/* Impact burst on add */}
           <AnimatePresence>
             {showCartImpact && (
               <motion.div
