@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { animate, stagger, onScroll } from 'animejs';
 import Onomatopoeia from './Onomatopoeia';
 import ComicPanel from './ComicPanel';
+import StickerPop from './StickerPop';
 
 const GALLERY = [
   {
@@ -85,6 +86,20 @@ export default function LookbookGallery() {
     <section className="relative py-20 md:py-32 px-4 overflow-hidden" data-cursor="default">
       <div className="absolute inset-0 halftone-yellow opacity-5" />
 
+      {/* Floating stickers */}
+      <StickerPop className="absolute top-8 right-[8%] md:right-[12%] z-10" delay={300} rotate={15}>
+        <span className="onomatopoeia text-3xl md:text-5xl text-punk-yellow neon-flicker pointer-events-none select-none">BAM!</span>
+      </StickerPop>
+      <StickerPop className="absolute bottom-16 left-[5%] z-10" delay={600} rotate={-10}>
+        <span className="onomatopoeia text-2xl md:text-4xl text-punk-pink pointer-events-none select-none">WHAM!</span>
+      </StickerPop>
+      <StickerPop className="absolute top-[40%] right-[3%] z-10 hidden md:block" delay={900} rotate={8}>
+        <div className="w-16 h-16 border-4 border-punk-yellow rotate-12 pointer-events-none opacity-20" />
+      </StickerPop>
+      <StickerPop className="absolute bottom-[30%] left-[2%] z-10 hidden md:block" delay={1100} rotate={-15}>
+        <div className="w-12 h-12 bg-punk-pink rounded-full pointer-events-none opacity-15" />
+      </StickerPop>
+
       <div className="max-w-7xl mx-auto">
         <div ref={headerRef} className="mb-12 md:mb-16 relative">
           <div data-reveal><Onomatopoeia text="ZAP!" className="text-3xl md:text-5xl mb-4 inline-block" /></div>
@@ -102,7 +117,7 @@ export default function LookbookGallery() {
           {GALLERY.map((item) => (
             <div
               key={item.id}
-              className={`gallery-item ${item.span} relative group overflow-hidden comic-panel-wobble`}
+              className={`gallery-item ${item.span} relative group overflow-hidden comic-panel-wobble hover-glow`}
               data-cursor="product"
             >
               <img
@@ -118,7 +133,7 @@ export default function LookbookGallery() {
                   {item.label}
                 </span>
               </div>
-              <div className="absolute top-2 right-2 jagged-bubble bg-punk-yellow text-punk-black text-[9px] px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+              <div className="absolute top-2 right-2 jagged-bubble bg-punk-yellow text-punk-black text-[9px] px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover-wiggle">
                 {item.label}
               </div>
             </div>

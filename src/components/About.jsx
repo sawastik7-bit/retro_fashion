@@ -3,6 +3,7 @@ import { animate, stagger, onScroll } from 'animejs';
 import ComicPanel from './ComicPanel';
 import Onomatopoeia from './Onomatopoeia';
 import SpeechBubble from './SpeechBubble';
+import StickerPop from './StickerPop';
 
 export default function About() {
   const leftRef = useRef(null);
@@ -38,7 +39,7 @@ export default function About() {
 
   return (
     <section className="relative py-20 md:py-32 px-4 overflow-hidden" data-cursor="default">
-      <div className="absolute top-10 left-[5%] w-40 h-40 pointer-events-none opacity-10">
+      <div className="absolute top-10 left-[5%] w-40 h-40 pointer-events-none opacity-10 ink-pulse">
         <svg viewBox="0 0 100 100">
           <circle cx="50" cy="50" r="30" fill="#ff2d6b" />
           <circle cx="30" cy="35" r="12" fill="#ff2d6b" />
@@ -48,6 +49,14 @@ export default function About() {
           <ellipse cx="50" cy="50" rx="40" ry="25" fill="#ff2d6b" opacity="0.3" />
         </svg>
       </div>
+
+      {/* Floating stickers */}
+      <StickerPop className="absolute top-12 right-[6%] z-10 hidden lg:block" delay={400} rotate={-12}>
+        <span className="onomatopoeia text-4xl text-punk-yellow pointer-events-none select-none glitch-hover">POW!</span>
+      </StickerPop>
+      <StickerPop className="absolute bottom-20 left-[8%] z-10 hidden lg:block" delay={700} rotate={10}>
+        <div className="w-20 h-20 border-4 border-punk-pink rounded-full pointer-events-none opacity-20 spin-pop" />
+      </StickerPop>
 
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 md:gap-12">

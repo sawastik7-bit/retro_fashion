@@ -1,5 +1,7 @@
 import { useRef, useEffect, useMemo } from 'react';
 import { motion, useScroll, useTransform, useMotionValue } from 'framer-motion';
+import { animate } from 'animejs';
+import TextScramble from './TextScramble';
 
 function SpeedLinesSVG({ color = '#0a0a0a', count = 24, className = '' }) {
   const lines = useMemo(() => {
@@ -140,7 +142,7 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
         >
-          RETRO
+          <TextScramble text="RETRO" delay={400} />
         </motion.h1>
 
         {/* PUNK text with jitter */}
@@ -226,6 +228,28 @@ export default function Hero() {
           <span className="onomatopoeia text-4xl md:text-6xl text-punk-yellow">RAW!</span>
         </motion.div>
       </motion.div>
+
+      {/* Floating clouds/smoke */}
+      <div className="absolute top-[15%] left-[10%] w-40 h-20 pointer-events-none cloud-float opacity-10">
+        <svg viewBox="0 0 200 100" className="w-full h-full">
+          <ellipse cx="100" cy="50" rx="80" ry="30" fill="white" />
+          <ellipse cx="60" cy="45" rx="50" ry="25" fill="white" />
+          <ellipse cx="140" cy="55" rx="45" ry="20" fill="white" />
+        </svg>
+      </div>
+      <div className="absolute top-[25%] right-[8%] w-32 h-16 pointer-events-none cloud-float opacity-8" style={{ animationDelay: '2s', animationDuration: '10s' }}>
+        <svg viewBox="0 0 200 100" className="w-full h-full">
+          <ellipse cx="100" cy="50" rx="70" ry="25" fill="white" />
+          <ellipse cx="55" cy="48" rx="40" ry="20" fill="white" />
+          <ellipse cx="145" cy="52" rx="35" ry="18" fill="white" />
+        </svg>
+      </div>
+      <div className="absolute bottom-[25%] left-[15%] w-24 h-12 pointer-events-none cloud-float opacity-6" style={{ animationDelay: '4s', animationDuration: '12s' }}>
+        <svg viewBox="0 0 200 100" className="w-full h-full">
+          <ellipse cx="100" cy="50" rx="60" ry="22" fill="white" />
+          <ellipse cx="65" cy="47" rx="35" ry="18" fill="white" />
+        </svg>
+      </div>
 
       {/* Bottom ink splatter */}
       <div className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none">

@@ -419,3 +419,196 @@ body {
     transition: background 0.2s;
   }
 }
+
+/* ===== MICRO-INTERACTIONS ===== */
+
+/* Button ripple effect */
+.btn-ripple {
+  position: relative;
+  overflow: hidden;
+}
+.btn-ripple .ripple-circle {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(0);
+  animation: ripple-expand 0.6s ease-out forwards;
+  pointer-events: none;
+}
+@keyframes ripple-expand {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+/* Card flip */
+.flip-card {
+  perspective: 1000px;
+}
+.flip-card-inner {
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+}
+.flip-card:hover .flip-card-inner,
+.flip-card.flipped .flip-card-inner {
+  transform: rotateY(180deg);
+}
+.flip-card-front,
+.flip-card-back {
+  backface-visibility: hidden;
+}
+.flip-card-back {
+  transform: rotateY(180deg);
+}
+
+/* Hover glow */
+.hover-glow {
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+.hover-glow:hover {
+  box-shadow: 0 0 20px rgba(255, 45, 107, 0.3), 0 0 40px rgba(255, 45, 107, 0.1);
+  transform: translateY(-4px);
+}
+
+/* Sticker bounce */
+@keyframes sticker-bounce {
+  0% { transform: scale(0) rotate(-20deg); }
+  50% { transform: scale(1.2) rotate(5deg); }
+  70% { transform: scale(0.9) rotate(-3deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+.sticker-enter {
+  animation: sticker-bounce 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Cloud / smoke float */
+@keyframes cloud-drift {
+  0% { transform: translateX(0) translateY(0) scale(1); opacity: 0.15; }
+  50% { transform: translateX(30px) translateY(-15px) scale(1.1); opacity: 0.08; }
+  100% { transform: translateX(0) translateY(0) scale(1); opacity: 0.15; }
+}
+.cloud-float {
+  animation: cloud-drift 8s ease-in-out infinite;
+}
+
+/* Ink splatter pulse */
+@keyframes ink-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.1; }
+  50% { transform: scale(1.1); opacity: 0.15; }
+}
+.ink-pulse {
+  animation: ink-pulse 4s ease-in-out infinite;
+}
+
+/* Shake on hover */
+@keyframes micro-shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-2px) rotate(-0.5deg); }
+  40% { transform: translateX(2px) rotate(0.5deg); }
+  60% { transform: translateX(-1px) rotate(-0.3deg); }
+  80% { transform: translateX(1px) rotate(0.3deg); }
+}
+.hover-shake:hover {
+  animation: micro-shake 0.4s ease-in-out;
+}
+
+/* Bounce in from bottom */
+@keyframes bounce-in-up {
+  0% { transform: translateY(30px); opacity: 0; }
+  60% { transform: translateY(-5px); opacity: 1; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+.bounce-in {
+  animation: bounce-in-up 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Spin pop */
+@keyframes spin-pop {
+  0% { transform: scale(0) rotate(-180deg); }
+  70% { transform: scale(1.1) rotate(10deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+.spin-pop {
+  animation: spin-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Wiggle */
+@keyframes wiggle {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-3deg); }
+  75% { transform: rotate(3deg); }
+}
+.hover-wiggle:hover {
+  animation: wiggle 0.3s ease-in-out 2;
+}
+
+/* Neon flicker */
+@keyframes neon-flicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; }
+  20%, 24%, 55% { opacity: 0.6; }
+}
+.neon-flicker {
+  animation: neon-flicker 3s infinite;
+}
+
+/* Text wave */
+@keyframes text-wave {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+/* Parallax helper */
+.parallax-slow { will-change: transform; }
+.parallax-fast { will-change: transform; }
+
+/* Gradient shift */
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.gradient-shift {
+  background-size: 200% 200%;
+  animation: gradient-shift 4s ease infinite;
+}
+
+/* Border dash animation */
+@keyframes border-dash {
+  to { stroke-dashoffset: 0; }
+}
+
+/* Floating particles */
+@keyframes float-particle {
+  0%, 100% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0.6; }
+  25% { transform: translateY(-20px) translateX(10px) rotate(90deg); opacity: 0.3; }
+  50% { transform: translateY(-40px) translateX(-5px) rotate(180deg); opacity: 0.6; }
+  75% { transform: translateY(-20px) translateX(-10px) rotate(270deg); opacity: 0.3; }
+}
+
+/* Scale bounce on click */
+.click-bounce:active {
+  animation: click-bounce-anim 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes click-bounce-anim {
+  0% { transform: scale(1); }
+  40% { transform: scale(0.92); }
+  100% { transform: scale(1); }
+}
+
+/* Marquee speed boost on hover */
+.marquee-hover:hover {
+  animation-duration: 8s !important;
+}
+
+/* Glitch effect */
+@keyframes glitch-1 {
+  0%, 100% { clip-path: inset(0 0 0 0); transform: translate(0); }
+  20% { clip-path: inset(20% 0 60% 0); transform: translate(-3px, 2px); }
+  40% { clip-path: inset(40% 0 20% 0); transform: translate(3px, -1px); }
+  60% { clip-path: inset(60% 0 10% 0); transform: translate(-2px, 1px); }
+  80% { clip-path: inset(10% 0 80% 0); transform: translate(2px, -2px); }
+}
+.glitch-hover:hover {
+  animation: glitch-1 0.3s linear;
+}

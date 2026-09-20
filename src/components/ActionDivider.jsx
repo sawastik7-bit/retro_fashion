@@ -1,6 +1,22 @@
+import { useEffect, useRef } from 'react';
+import { animate, onScroll } from 'animejs';
+
 export default function ActionDivider({ className = '' }) {
+  const ref = useRef(null);
+
+  useEffect(() => {
+    if (!ref.current) return;
+    const anim = animate(ref.current.querySelectorAll('path'), {
+      strokeDashoffset: [200, 0],
+      duration: 800,
+      ease: 'easeOutCubic',
+    });
+    const cancel = onScroll(anim, { container: window, enter: 'top bottom+=20', once: true });
+    return () => { anim.cancel(); cancel?.(); };
+  }, []);
+
   return (
-    <div className={`action-divider my-0 ${className}`} aria-hidden="true">
+    <div ref={ref} className={`action-divider my-0 ${className}`} aria-hidden="true">
       <svg
         viewBox="0 0 1200 40"
         className="w-full h-[30px]"
@@ -21,6 +37,8 @@ export default function ActionDivider({ className = '' }) {
           strokeLinecap="round"
           strokeDasharray="8 12"
         />
+        {/* Center dot */}
+        <circle cx="600" cy="20" r="4" fill="#ffd600" className="ink-pulse" />
       </svg>
     </div>
   );
