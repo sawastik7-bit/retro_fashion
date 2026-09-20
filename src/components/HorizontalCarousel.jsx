@@ -4,6 +4,7 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Onomatopoeia from './Onomatopoeia';
 import SpeechBubble from './SpeechBubble';
+import { LightningBolt, ComicStarburst, SmokePuff, DiamondShape } from './ComicDecorations';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -117,6 +118,15 @@ export default function HorizontalCarousel() {
 
   return (
     <section className="relative" data-cursor="default">
+      {/* Decorations */}
+      <div className="section-decorations">
+        <LightningBolt className="absolute top-[8%] right-[6%] hidden md:block" size={40} delay={0.3} />
+        <ComicStarburst className="absolute top-[15%] left-[3%] hidden lg:block" size={45} text="GO" delay={0.5} />
+        <SmokePuff className="absolute bottom-[20%] right-[10%] hidden md:block" size={55} delay={0.7} />
+        <DiamondShape className="absolute top-[40%] left-[5%] hidden lg:block" size={18} delay={0.9} />
+        <DiamondShape className="absolute bottom-[15%] right-[4%] hidden md:block" size={22} color="#ffd600" delay={1.1} />
+      </div>
+
       {/* Section header (visible before pin) */}
       <div className="px-4 pt-20 md:pt-32 pb-8 max-w-7xl mx-auto">
         <div className="relative">

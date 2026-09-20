@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import ComicPanel from './ComicPanel';
 import Onomatopoeia from './Onomatopoeia';
 import SpeechBubble from './SpeechBubble';
+import { ThunderCloud, InkSplat, DiamondShape, ComicBurst } from './ComicDecorations';
 
 const fadeLeft = {
   hidden: { opacity: 0, x: -40 },
@@ -25,6 +26,14 @@ export default function About() {
           <circle cx="65" cy="65" r="6" fill="#ff2d6b" />
           <ellipse cx="50" cy="50" rx="40" ry="25" fill="#ff2d6b" opacity="0.3" />
         </svg>
+      </div>
+
+      {/* Decorations */}
+      <div className="section-decorations">
+        <ThunderCloud className="absolute top-[5%] right-[4%] hidden md:block" size={70} delay={0.4} />
+        <InkSplat className="absolute bottom-[15%] right-[5%] hidden lg:block" size={55} delay={0.6} />
+        <DiamondShape className="absolute top-[30%] left-[3%] hidden lg:block" size={18} delay={0.8} />
+        <ComicBurst className="absolute bottom-[10%] left-[6%] hidden md:block" size={50} delay={1} />
       </div>
 
       <motion.div className="absolute top-12 right-[6%] z-10 hidden lg:block" initial={{ scale: 0, rotate: -20 }} whileInView={{ scale: 1, rotate: -12 }} viewport={{ once: true }} transition={{ type: 'spring', stiffness: 300, damping: 12, delay: 0.5 }}>

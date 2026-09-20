@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import ComicPanel from './ComicPanel';
 import SpeechBubble from './SpeechBubble';
+import { LightningBolt, SmokePuff, DiamondShape } from './ComicDecorations';
 
 export default function Newsletter() {
   const [submitted, setSubmitted] = useState(false);
@@ -14,6 +15,14 @@ export default function Newsletter() {
   return (
     <section className="relative py-20 md:py-32 px-4 overflow-hidden" data-cursor="default">
       <div className="absolute inset-0 halftone-yellow opacity-5" />
+
+      {/* Decorations */}
+      <div className="section-decorations">
+        <LightningBolt className="absolute top-[10%] left-[5%] hidden md:block" size={40} delay={0.3} />
+        <SmokePuff className="absolute bottom-[15%] right-[6%] hidden lg:block" size={50} delay={0.5} />
+        <DiamondShape className="absolute top-[30%] right-[4%] hidden lg:block" size={16} delay={0.7} />
+        <LightningBolt className="absolute bottom-[10%] left-[8%] hidden lg:block" size={32} color="#ff2d6b" delay={0.9} />
+      </div>
 
       <div className="max-w-3xl mx-auto text-center">
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }}>

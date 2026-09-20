@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import Onomatopoeia from './Onomatopoeia';
 import ComicPanel from './ComicPanel';
+import { LightningBolt, ComicStarburst, SmokePuff, ZigZag } from './ComicDecorations';
 
 const GALLERY = [
   { id: 1, image: 'https://images.unsplash.com/photo-1523398002811-999ca8dec234?w=600&h=750&fit=crop', span: 'col-span-1 row-span-2', label: 'STREET' },
@@ -63,6 +64,10 @@ function Stickers() {
       <div className="absolute bottom-16 left-[5%] z-10 sticker-enter" style={{ animationDelay: '1s' }}>
         <span className="onomatopoeia text-2xl md:text-4xl text-punk-pink pointer-events-none select-none">WHAM!</span>
       </div>
+      <LightningBolt className="absolute top-[15%] left-[4%] hidden lg:block" size={42} delay={0.6} />
+      <ComicStarburst className="absolute bottom-[20%] right-[5%] hidden md:block" size={40} text="!" delay={0.8} />
+      <SmokePuff className="absolute top-[30%] right-[3%] hidden lg:block" size={45} delay={1} />
+      <ZigZag className="absolute bottom-[10%] left-[8%] hidden lg:block" width={50} delay={1.2} />
     </>
   );
 }

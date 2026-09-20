@@ -1,10 +1,17 @@
 import { motion } from 'framer-motion';
+import { ZigZag, CrossHair } from './ComicDecorations';
 
 export default function Footer() {
   return (
     <footer className="relative border-t-4 border-punk-black bg-punk-black py-12 px-4" data-cursor="default">
       {/* Halftone strip at top */}
       <div className="absolute top-0 left-0 right-0 h-2 halftone-pink" />
+
+      {/* Decorations */}
+      <div className="section-decorations">
+        <ZigZag className="absolute top-[20%] left-[3%] hidden lg:block" width={50} color="#ff2d6b" delay={0.3} />
+        <CrossHair className="absolute top-[30%] right-[5%] hidden md:block" size={20} delay={0.5} />
+      </div>
 
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 mb-12">

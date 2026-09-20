@@ -5,6 +5,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import ComicPanel from './ComicPanel';
 import Onomatopoeia from './Onomatopoeia';
 import SpeechBubble from './SpeechBubble';
+import { LightningBolt, ThunderCloud, InkSplat, ComicBurst, ZigZag } from './ComicDecorations';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -144,6 +145,7 @@ export default function FeaturedDrop() {
 
   return (
     <section ref={sectionRef} className="relative py-20 md:py-32 px-4 overflow-hidden" data-cursor="default">
+      {/* Background rays */}
       <div className="absolute inset-0 pointer-events-none opacity-10">
         <svg viewBox="0 0 100 100" className="w-full h-full" preserveAspectRatio="none">
           {Array.from({ length: 20 }).map((_, i) => {
@@ -162,6 +164,16 @@ export default function FeaturedDrop() {
             );
           })}
         </svg>
+      </div>
+
+      {/* Decorations */}
+      <div className="section-decorations">
+        <LightningBolt className="absolute top-[10%] left-[4%] hidden lg:block" size={50} delay={0.4} />
+        <LightningBolt className="absolute bottom-[15%] right-[6%] hidden md:block" size={38} color="#ff2d6b" delay={0.8} />
+        <ThunderCloud className="absolute top-[5%] right-[8%] hidden md:block" size={80} delay={0.3} />
+        <InkSplat className="absolute top-[30%] right-[3%] hidden lg:block" size={60} delay={0.6} />
+        <ComicBurst className="absolute bottom-[10%] left-[5%] hidden md:block" size={70} delay={0.9} />
+        <ZigZag className="absolute top-[45%] left-[2%] hidden lg:block" width={60} delay={1.1} />
       </div>
 
       <div className="max-w-7xl mx-auto">

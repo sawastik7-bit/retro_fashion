@@ -612,3 +612,123 @@ body {
 .glitch-hover:hover {
   animation: glitch-1 0.3s linear;
 }
+
+/* ===== NEW MICRO-INTERACTIONS ===== */
+
+/* Thunder shake — used on lightning bolt decorations */
+@keyframes thunder-shake {
+  0%, 100% { transform: translateX(0) rotate(0deg); }
+  10% { transform: translateX(-3px) rotate(-2deg); }
+  20% { transform: translateX(3px) rotate(2deg); }
+  30% { transform: translateX(-2px) rotate(-1deg); }
+  40% { transform: translateX(2px) rotate(1deg); }
+  50% { transform: translateX(-1px) rotate(0deg); }
+}
+.thunder-shake {
+  animation: thunder-shake 0.6s ease-in-out;
+}
+
+/* Lightning flash — overlay that flashes white */
+@keyframes lightning-flash {
+  0%, 100% { opacity: 0; }
+  5% { opacity: 0.8; }
+  10% { opacity: 0; }
+  15% { opacity: 0.5; }
+  20% { opacity: 0; }
+}
+.lightning-flash {
+  animation: lightning-flash 2s ease-in-out infinite;
+  animation-delay: 3s;
+}
+
+/* Starburst pop — grows from center with rotation */
+@keyframes starburst-pop {
+  0% { transform: scale(0) rotate(0deg); opacity: 0; }
+  40% { transform: scale(1.3) rotate(90deg); opacity: 1; }
+  70% { transform: scale(0.9) rotate(170deg); opacity: 1; }
+  100% { transform: scale(1) rotate(180deg); opacity: 1; }
+}
+.starburst-pop {
+  animation: starburst-pop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Sticker float-wobble — gentle idle animation for stickers */
+@keyframes sticker-float-wobble {
+  0%, 100% { transform: translateY(0) rotate(var(--sticker-rotate, 0deg)); }
+  25% { transform: translateY(-6px) rotate(calc(var(--sticker-rotate, 0deg) + 3deg)); }
+  50% { transform: translateY(-2px) rotate(calc(var(--sticker-rotate, 0deg) - 2deg)); }
+  75% { transform: translateY(-8px) rotate(calc(var(--sticker-rotate, 0deg) + 1deg)); }
+}
+.sticker-float {
+  animation: sticker-float-wobble 4s ease-in-out infinite;
+}
+
+/* Smoke puff — expands and fades */
+@keyframes smoke-puff {
+  0% { transform: scale(0.3); opacity: 0.5; }
+  50% { transform: scale(1); opacity: 0.2; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+
+/* Impact star rotate */
+@keyframes impact-star-rotate {
+  0% { transform: rotate(0deg) scale(0); opacity: 0; }
+  30% { transform: rotate(120deg) scale(1.2); opacity: 1; }
+  100% { transform: rotate(360deg) scale(1); opacity: 0.6; }
+}
+.impact-star-spin {
+  animation: impact-star-rotate 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Comic hand-drawn border animation */
+@keyframes hand-draw-border {
+  0% { stroke-dashoffset: 600; }
+  100% { stroke-dashoffset: 0; }
+}
+
+/* Swoosh trail */
+@keyframes swoosh-trail {
+  0% { transform: translateX(-100%) scaleX(0.5); opacity: 0; }
+  30% { opacity: 1; }
+  100% { transform: translateX(100%) scaleX(0.5); opacity: 0; }
+}
+
+/* Badge pop — for corner badges */
+@keyframes badge-pop {
+  0% { transform: scale(0) rotate(-30deg); }
+  60% { transform: scale(1.2) rotate(5deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+.badge-pop {
+  animation: badge-pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Halftone pulse — background dot pattern breathes */
+@keyframes halftone-pulse {
+  0%, 100% { background-size: 8px 8px; }
+  50% { background-size: 10px 10px; }
+}
+
+/* Zigzag underline */
+.zigzag-underline {
+  background-image: linear-gradient(135deg, var(--color-punk-pink) 25%, transparent 25%),
+    linear-gradient(225deg, var(--color-punk-pink) 25%, transparent 25%);
+  background-size: 6px 4px;
+  background-position: 0 100%;
+  background-repeat: repeat-x;
+  padding-bottom: 4px;
+}
+
+/* Sticker shadow — hand-drawn style drop shadow */
+.sticker-shadow {
+  filter: drop-shadow(3px 3px 0 #0a0a0a) drop-shadow(-1px -1px 0 #0a0a0a);
+}
+
+/* Section overflow container for stickers */
+.section-decorations {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: visible;
+  z-index: 5;
+}

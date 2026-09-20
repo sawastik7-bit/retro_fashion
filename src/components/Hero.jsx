@@ -1,5 +1,6 @@
-import { useRef, useEffect, useMemo } from 'react';
-import { motion, useScroll, useTransform, useMotionValue } from 'framer-motion';
+import { useRef, useMemo } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { LightningBolt, ThunderCloud, SmokePuff, DiamondShape, CrossHair } from './ComicDecorations';
 
 function SpeedLinesSVG({ color = '#0a0a0a', count = 24, className = '' }) {
   const lines = useMemo(() => {
@@ -57,6 +58,7 @@ export default function Hero() {
         <SpeedLinesSVG color="rgba(255,45,107,0.25)" count={36} />
       </motion.div>
 
+      {/* Floating geometric shapes */}
       <FloatingShape className="top-[15%] left-[8%] md:left-[12%] w-24 h-24 md:w-40 md:h-40 bg-punk-pink opacity-20" speed={0.8} parallaxAmount={120}>
         <div className="w-full h-full bg-punk-pink opacity-30" style={{ transform: 'skewX(-12deg)' }} />
       </FloatingShape>
@@ -67,12 +69,24 @@ export default function Hero() {
         <div className="w-full h-full border-4 border-punk-pink rotate-12" />
       </FloatingShape>
 
-      {/* Clouds */}
-      <div className="absolute top-[15%] left-[10%] w-40 h-20 pointer-events-none cloud-float opacity-10">
-        <svg viewBox="0 0 200 100" className="w-full h-full"><ellipse cx="100" cy="50" rx="80" ry="30" fill="white" /><ellipse cx="60" cy="45" rx="50" ry="25" fill="white" /><ellipse cx="140" cy="55" rx="45" ry="20" fill="white" /></svg>
-      </div>
-      <div className="absolute top-[25%] right-[8%] w-32 h-16 pointer-events-none cloud-float opacity-8" style={{ animationDelay: '2s', animationDuration: '10s' }}>
-        <svg viewBox="0 0 200 100" className="w-full h-full"><ellipse cx="100" cy="50" rx="70" ry="25" fill="white" /><ellipse cx="55" cy="48" rx="40" ry="20" fill="white" /></svg>
+      {/* Decorations layer */}
+      <div className="section-decorations">
+        {/* Lightning bolts */}
+        <LightningBolt className="absolute top-[12%] right-[18%] hidden md:block" size={45} delay={1.5} />
+        <LightningBolt className="absolute bottom-[25%] left-[6%] hidden lg:block" size={35} color="#ff2d6b" delay={1.8} />
+
+        {/* Thunder clouds */}
+        <ThunderCloud className="absolute top-[8%] left-[5%] hidden md:block" size={90} delay={0.5} />
+        <ThunderCloud className="absolute top-[20%] right-[4%] hidden lg:block" size={70} delay={0.8} />
+
+        {/* Smoke puffs */}
+        <SmokePuff className="absolute bottom-[30%] left-[15%]" size={50} delay={1} />
+        <SmokePuff className="absolute top-[40%] right-[12%] hidden md:block" size={40} delay={2} />
+
+        {/* Diamond + crosshair shapes */}
+        <DiamondShape className="absolute top-[45%] left-[4%] hidden lg:block" size={20} delay={1.2} />
+        <CrossHair className="absolute bottom-[15%] right-[20%] hidden md:block" size={28} delay={1.6} />
+        <DiamondShape className="absolute top-[25%] left-[30%] hidden lg:block" size={14} color="#ffd600" delay={2} />
       </div>
 
       <motion.div className="relative z-10 text-center px-4" style={{ y: textY }}>
@@ -114,6 +128,11 @@ export default function Hero() {
         <motion.div className="absolute -top-8 -right-4 md:right-[10%] md:top-[5%]"
           initial={{ scale: 0, rotate: -20 }} animate={{ scale: 1, rotate: 8 }} transition={{ type: 'spring', stiffness: 300, damping: 12, delay: 1.2 }}>
           <span className="onomatopoeia text-4xl md:text-6xl text-punk-yellow">RAW!</span>
+        </motion.div>
+
+        <motion.div className="absolute -bottom-4 -left-2 md:left-[8%] md:bottom-[15%]"
+          initial={{ scale: 0, rotate: 15 }} animate={{ scale: 1, rotate: -6 }} transition={{ type: 'spring', stiffness: 300, damping: 12, delay: 1.4 }}>
+          <span className="onomatopoeia text-2xl md:text-4xl text-punk-pink">YEAH!</span>
         </motion.div>
       </motion.div>
 

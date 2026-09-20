@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import ProductCard from './ProductCard';
 import ComicPanel from './ComicPanel';
 import Onomatopoeia from './Onomatopoeia';
+import { ComicStarburst, InkSplat, DiamondShape, CrossHair } from './ComicDecorations';
 
 const PRODUCTS = [
   {
@@ -63,6 +64,15 @@ export default function ProductGrid() {
     <section className="relative py-20 md:py-32 px-4 overflow-hidden" data-cursor="default">
       {/* Background halftone */}
       <div className="absolute inset-0 halftone-pink opacity-5" />
+
+      {/* Decorations */}
+      <div className="section-decorations">
+        <ComicStarburst className="absolute top-[8%] right-[5%] hidden md:block" size={50} color="#ffd600" delay={0.3} text="NEW" />
+        <InkSplat className="absolute bottom-[12%] left-[3%] hidden lg:block" size={65} delay={0.5} />
+        <DiamondShape className="absolute top-[25%] left-[5%] hidden lg:block" size={16} delay={0.7} />
+        <CrossHair className="absolute bottom-[20%] right-[8%] hidden md:block" size={22} delay={0.9} />
+        <DiamondShape className="absolute top-[40%] right-[3%] hidden lg:block" size={20} color="#ffd600" delay={1.1} />
+      </div>
 
       <div className="max-w-7xl mx-auto">
         {/* Section header */}
