@@ -1,5 +1,4 @@
-import { useEffect, useRef } from 'react';
-import { animate, stagger, onScroll } from 'animejs';
+import { motion } from 'framer-motion';
 import Onomatopoeia from './Onomatopoeia';
 import ComicPanel from './ComicPanel';
 
@@ -49,45 +48,12 @@ const GALLERY = [
 ];
 
 export default function LookbookGallery() {
-  const gridRef = useRef(null);
-  const headerRef = useRef(null);
-
-  useEffect(() => {
-    if (!headerRef.current) return;
-    const anim = animate(headerRef.current, {
-      translateY: [40, 0],
-      opacity: [0, 1],
-      duration: 700,
-      ease: 'easeOutCubic',
-    });
-    const cancel = onScroll(anim, { container: window, enter: 'top bottom+=60', once: true });
-    return () => { anim.cancel(); cancel?.(); };
-  }, []);
-
-  useEffect(() => {
-    if (!gridRef.current) return;
-    const items = gridRef.current.querySelectorAll('.gallery-item');
-    if (!items.length) return;
-    const anim = animate(items, {
-      translateY: [50, 0],
-      opacity: [0, 1],
-      scale: [0.95, 1],
-      duration: 600,
-      delay: stagger(80),
-      ease: 'easeOutCubic',
-    });
-    const cancel = onScroll(anim, { container: window, enter: 'top bottom+=40', once: true });
-    return () => { anim.cancel(); cancel?.(); };
-  }, []);
-
   return (
     <section className="relative py-20 md:py-32 px-4 overflow-hidden" data-cursor="default">
-      {/* Background halftone */}
       <div className="absolute inset-0 halftone-yellow opacity-5" />
 
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div ref={headerRef} className="mb-12 md:mb-16 relative" style={{ opacity: 0 }}>
+        <div className="mb-12 md:mb-16 relative">
           <Onomatopoeia text="ZAP!" className="text-3xl md:text-5xl mb-4 inline-block" />
           <ComicPanel className="inline-block p-4 md:p-6 bg-punk-black ml-4" delay={0.2}>
             <h2 className="font-display text-4xl md:text-6xl lg:text-7xl tracking-wide text-punk-white">
@@ -99,41 +65,38 @@ export default function LookbookGallery() {
           </p>
         </div>
 
-        {/* Masonry-style gallery grid */}
-        <div ref={gridRef} className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 auto-rows-[200px] md:auto-rows-[250px]">
-          {GALLERY.map((item) => (
-            <div
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 auto-rows-[200px] md:auto-rows-[250px]">
+          {GALLERY.map((item, i) => (
+            <motion.div
               key={item.id}
-              className={`gallery-item ${item.span} relative group overflow-hidden comic-panel-wobble`}
-              style={{ opacity: 0 }}
+              className={`${item.span} relative group overflow-hidden comic-panel-wobble`}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{
+                duration: 0.5,
+                delay: i * 0.08,
+                ease: [0.16, 1, 0.3, 1],
+              }}
               data-cursor="product"
             >
-              {/* Image */}
               <img
                 src={item.image}
                 alt={item.label}
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 loading="lazy"
               />
-
-              {/* Duotone overlay */}
               <div className="absolute inset-0 bg-gradient-to-br from-punk-pink/20 to-transparent mix-blend-multiply pointer-events-none" />
-
-              {/* Halftone on hover */}
               <div className="absolute inset-0 halftone-overlay opacity-0 group-hover:opacity-50 transition-opacity duration-200 pointer-events-none" />
-
-              {/* Bottom label bar */}
               <div className="absolute bottom-0 left-0 right-0 p-3 md:p-4 bg-gradient-to-t from-punk-black/80 to-transparent translate-y-full group-hover:translate-y-0 transition-transform duration-300">
                 <span className="font-display text-lg md:text-xl tracking-wider text-punk-white">
                   {item.label}
                 </span>
               </div>
-
-              {/* Corner tag */}
               <div className="absolute top-2 right-2 jagged-bubble bg-punk-yellow text-punk-black text-[9px] px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                 {item.label}
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
