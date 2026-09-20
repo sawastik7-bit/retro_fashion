@@ -1,6 +1,5 @@
 import { useRef, useState } from 'react';
 import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
-import { animate } from 'animejs';
 import SpeechBubble from './SpeechBubble';
 
 function RippleButton({ children, className, onClick, ...props }) {
@@ -31,7 +30,6 @@ export default function ProductCard({ product, onDragToCart, index = 0 }) {
   const cardRef = useRef(null);
   const [isDragging, setIsDragging] = useState(false);
   const [showImpact, setShowImpact] = useState(false);
-  const [clickBounce, setClickBounce] = useState(false);
   const [isFlipped, setIsFlipped] = useState(false);
 
   const x = useMotionValue(0);
@@ -55,21 +53,12 @@ export default function ProductCard({ product, onDragToCart, index = 0 }) {
   };
 
   const handleClick = () => {
-    setClickBounce(true);
     setShowImpact(true);
-    setTimeout(() => setClickBounce(false), 500);
     setTimeout(() => setShowImpact(false), 400);
   };
 
   const handleDoubleClick = () => {
     setIsFlipped(!isFlipped);
-    if (cardRef.current) {
-      animate(cardRef.current, {
-        scale: [1, 1.05, 1],
-        duration: 300,
-        ease: 'easeOutCubic',
-      });
-    }
   };
 
   return (
