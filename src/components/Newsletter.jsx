@@ -1,10 +1,24 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
+import { animate, onScroll } from 'animejs';
 import ComicPanel from './ComicPanel';
 import SpeechBubble from './SpeechBubble';
 
 export default function Newsletter() {
   const [submitted, setSubmitted] = useState(false);
+  const sectionRef = useRef(null);
+
+  useEffect(() => {
+    if (!sectionRef.current) return;
+    const anim = animate(sectionRef.current, {
+      translateY: [50, 0],
+      opacity: [0, 1],
+      duration: 800,
+      ease: 'easeOutCubic',
+    });
+    const cancel = onScroll(anim, { container: window, enter: 'top bottom+=60', once: true });
+    return () => { anim.cancel(); cancel?.(); };
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -12,7 +26,7 @@ export default function Newsletter() {
   };
 
   return (
-    <section className="relative py-20 md:py-32 px-4 overflow-hidden" data-cursor="default">
+    <section ref={sectionRef} className="relative py-20 md:py-32 px-4 overflow-hidden" data-cursor="default" style={{ opacity: 0 }}>
       {/* Background pattern */}
       <div className="absolute inset-0 halftone-yellow opacity-5" />
 

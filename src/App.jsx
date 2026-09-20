@@ -49,7 +49,7 @@ function App() {
       {/* Liquid Ether background */}
       <div className="fixed inset-0 z-0">
         <LiquidEther
-          colors={['#ff2d6b', '#ffd600', '#1d3557']}
+          colors={['#ffffff', '#c8c8ff', '#a0a0ff']}
           mouseForce={15}
           cursorSize={120}
           resolution={0.4}

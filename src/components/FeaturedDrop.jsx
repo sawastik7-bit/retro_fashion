@@ -1,12 +1,9 @@
 import { useRef, useEffect } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { motion } from 'framer-motion';
+import { animate, onScroll } from 'animejs';
 import ComicPanel from './ComicPanel';
 import Onomatopoeia from './Onomatopoeia';
 import SpeechBubble from './SpeechBubble';
-
-gsap.registerPlugin(ScrollTrigger);
 
 const DROPS = [
   {
@@ -29,40 +26,51 @@ const DROPS = [
 
 function DropCard({ item, index }) {
   const cardRef = useRef(null);
+  const textRef = useRef(null);
   const imageRef = useRef(null);
-  const reduce = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const badgeRef = useRef(null);
   const isReversed = index % 2 !== 0;
 
   useEffect(() => {
-    if (reduce || !cardRef.current) return;
+    if (!cardRef.current) return;
 
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        imageRef.current,
-        { x: 80, opacity: 0, rotate: 3 },
-        {
-          x: 0,
-          opacity: 1,
-          rotate: 0,
-          duration: 0.7,
-          ease: 'back.out(1.4)',
-          scrollTrigger: {
-            trigger: cardRef.current,
-            start: 'top 70%',
-          },
-        }
-      );
-    }, cardRef);
+    const textAnim = animate(textRef.current, {
+      translateX: isReversed ? [60, 0] : [-60, 0],
+      opacity: [0, 1],
+      duration: 800,
+      ease: 'easeOutCubic',
+    });
 
-    return () => ctx.revert();
-  }, [reduce]);
+    const imageAnim = animate(imageRef.current, {
+      translateX: isReversed ? [-80, 0] : [80, 0],
+      opacity: [0, 1],
+      rotate: [3, 0],
+      duration: 700,
+      delay: 150,
+      ease: 'back.out(1.4)',
+    });
 
-  const { scrollYProgress } = useScroll({
-    target: cardRef,
-    offset: ['start end', 'end start'],
-  });
+    const badgeAnim = animate(badgeRef.current, {
+      scale: [0, 1],
+      rotate: [20, 12],
+      duration: 500,
+      delay: 500,
+      ease: 'easeOutBack',
+    });
 
-  const parallaxY = useTransform(scrollYProgress, [0, 1], [60, -60]);
+    const cancelText = onScroll(textAnim, { container: window, enter: 'top bottom+=60', once: true });
+    const cancelImage = onScroll(imageAnim, { container: window, enter: 'top bottom+=60', once: true });
+    const cancelBadge = onScroll(badgeAnim, { container: window, enter: 'top bottom+=60', once: true });
+
+    return () => {
+      textAnim.cancel();
+      imageAnim.cancel();
+      badgeAnim.cancel();
+      cancelText?.();
+      cancelImage?.();
+      cancelBadge?.();
+    };
+  }, [isReversed]);
 
   return (
     <div
@@ -70,7 +78,7 @@ function DropCard({ item, index }) {
       className={`grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16 items-center ${index > 0 ? 'mt-16 md:mt-24' : ''}`}
     >
       {/* Text content */}
-      <div className={`relative z-10 ${isReversed ? 'lg:order-2' : ''}`}>
+      <div ref={textRef} className={`relative z-10 ${isReversed ? 'lg:order-2' : ''}`} style={{ opacity: 0 }}>
         <Onomatopoeia text={index === 0 ? 'SMASH!' : 'POW!'} className="text-3xl md:text-5xl mb-4 inline-block" />
 
         <ComicPanel className="p-6 md:p-8 bg-punk-black mb-8" delay={0.1}>
@@ -106,10 +114,10 @@ function DropCard({ item, index }) {
       </div>
 
       {/* Featured image */}
-      <motion.div
+      <div
         ref={imageRef}
         className={`relative ${isReversed ? 'lg:order-1' : ''}`}
-        style={{ y: parallaxY }}
+        style={{ opacity: 0 }}
       >
         <div className="comic-panel-wobble overflow-hidden bg-punk-gray">
           <div className="comic-ink-effect aspect-[3/4]">
@@ -127,19 +135,17 @@ function DropCard({ item, index }) {
         <div className="absolute -bottom-3 left-4 right-4 h-6 bg-punk-black torn-edge" />
 
         {/* Onomatopoeia decoration */}
-        <motion.div
+        <div
+          ref={badgeRef}
           className="absolute -top-6 -right-4 md:-right-8"
-          initial={{ scale: 0, rotate: 20 }}
-          whileInView={{ scale: 1, rotate: 12 }}
-          viewport={{ once: true }}
-          transition={{ type: 'spring', stiffness: 300, damping: 12, delay: 0.5 }}
+          style={{ opacity: 0, scale: 0 }}
         >
           <span className="onomatopoeia text-3xl md:text-5xl text-punk-yellow">{index === 0 ? 'POW!' : 'ZAP!'}</span>
-        </motion.div>
+        </div>
 
         {/* Halftone corner */}
         <div className="absolute bottom-0 right-0 w-32 h-32 halftone-dense opacity-30 pointer-events-none" />
-      </motion.div>
+      </div>
     </div>
   );
 }

@@ -1,9 +1,54 @@
-import { motion } from 'framer-motion';
+import { useEffect, useRef } from 'react';
+import { animate, stagger, onScroll } from 'animejs';
 import ComicPanel from './ComicPanel';
 import Onomatopoeia from './Onomatopoeia';
 import SpeechBubble from './SpeechBubble';
 
 export default function About() {
+  const leftRef = useRef(null);
+  const rightRef = useRef(null);
+  const rulesRef = useRef(null);
+
+  useEffect(() => {
+    if (!leftRef.current) return;
+    const anim = animate(leftRef.current, {
+      translateX: [-60, 0],
+      opacity: [0, 1],
+      duration: 800,
+      ease: 'easeOutCubic',
+    });
+    const cancel = onScroll(anim, { container: window, enter: 'top bottom+=60', once: true });
+    return () => { anim.cancel(); cancel?.(); };
+  }, []);
+
+  useEffect(() => {
+    if (!rightRef.current) return;
+    const anim = animate(rightRef.current, {
+      translateX: [60, 0],
+      opacity: [0, 1],
+      duration: 800,
+      delay: 200,
+      ease: 'easeOutCubic',
+    });
+    const cancel = onScroll(anim, { container: window, enter: 'top bottom+=60', once: true });
+    return () => { anim.cancel(); cancel?.(); };
+  }, []);
+
+  useEffect(() => {
+    if (!rulesRef.current) return;
+    const items = rulesRef.current.querySelectorAll('.rule-item');
+    if (!items.length) return;
+    const anim = animate(items, {
+      translateX: [30, 0],
+      opacity: [0, 1],
+      duration: 500,
+      delay: stagger(100, { start: 400 }),
+      ease: 'easeOutCubic',
+    });
+    const cancel = onScroll(anim, { container: window, enter: 'top bottom+=40', once: true });
+    return () => { anim.cancel(); cancel?.(); };
+  }, []);
+
   return (
     <section className="relative py-20 md:py-32 px-4 overflow-hidden" data-cursor="default">
       {/* Ink splatter decoration */}
@@ -21,7 +66,7 @@ export default function About() {
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 md:gap-12">
           {/* Left column - manifesto */}
-          <div className="lg:col-span-3">
+          <div ref={leftRef} className="lg:col-span-3" style={{ opacity: 0 }}>
             <Onomatopoeia text="CRASH!" className="text-3xl md:text-5xl mb-6 inline-block" />
 
             <ComicPanel className="p-6 md:p-10 bg-punk-black" delay={0.1}>
@@ -44,29 +89,26 @@ export default function About() {
           </div>
 
           {/* Right column - stats/values */}
-          <div className="lg:col-span-2 flex flex-col gap-6">
+          <div ref={rightRef} className="lg:col-span-2 flex flex-col gap-6" style={{ opacity: 0 }}>
             <ComicPanel className="p-6 bg-punk-pink" delay={0.3}>
               <SpeechBubble variant="white" className="text-xs px-3 py-1 mb-3">
                 OUR RULES
               </SpeechBubble>
-              <ul className="space-y-3">
+              <ul ref={rulesRef} className="space-y-3">
                 {[
                   'NO boring basics',
                   'NO fast-fashion BS',
                   'YES to hand-drawn art',
                   'YES to limited runs',
-                ].map((item, i) => (
-                  <motion.li
+                ].map((item) => (
+                  <li
                     key={item}
-                    className="font-display text-lg md:text-xl tracking-wider text-punk-black flex items-center gap-3"
-                    initial={{ opacity: 0, x: 20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.4 + i * 0.1 }}
+                    className="rule-item font-display text-lg md:text-xl tracking-wider text-punk-black flex items-center gap-3"
+                    style={{ opacity: 0 }}
                   >
                     <span className="w-3 h-3 bg-punk-black shrink-0" style={{ clipPath: 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)' }} />
                     {item}
-                  </motion.li>
+                  </li>
                 ))}
               </ul>
             </ComicPanel>

@@ -1,9 +1,11 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
+import { animate, onScroll } from 'animejs';
 import SpeechBubble from './SpeechBubble';
 
 export default function ProductCard({ product, onDragToCart, index = 0 }) {
   const cardRef = useRef(null);
+  const wrapperRef = useRef(null);
   const [isDragging, setIsDragging] = useState(false);
   const [showImpact, setShowImpact] = useState(false);
   const [clickBounce, setClickBounce] = useState(false);
@@ -13,6 +15,20 @@ export default function ProductCard({ product, onDragToCart, index = 0 }) {
 
   const rotateX = useSpring(useTransform(y, [-150, 150], [8, -8]), { stiffness: 300, damping: 30 });
   const rotateY = useSpring(useTransform(x, [-150, 150], [-8, 8]), { stiffness: 300, damping: 30 });
+
+  useEffect(() => {
+    if (!wrapperRef.current) return;
+    const anim = animate(wrapperRef.current, {
+      translateY: [60, 0],
+      opacity: [0, 1],
+      rotate: [-2, 0],
+      duration: 600,
+      delay: index * 100,
+      ease: 'easeOutCubic',
+    });
+    const cancel = onScroll(anim, { container: window, enter: 'top bottom+=40', once: true });
+    return () => { anim.cancel(); cancel?.(); };
+  }, [index]);
 
   const handleMouseMove = (e) => {
     if (!cardRef.current) return;
@@ -36,22 +52,12 @@ export default function ProductCard({ product, onDragToCart, index = 0 }) {
   };
 
   return (
-    <motion.div
-      ref={cardRef}
+    <div
+      ref={wrapperRef}
       className="relative group"
       data-product="true"
       data-cursor="product"
-      initial={{ opacity: 0, y: 50, rotate: -2 }}
-      whileInView={{ opacity: 1, y: 0, rotate: 0 }}
-      viewport={{ once: true, amount: 0.3 }}
-      transition={{
-        duration: 0.5,
-        delay: index * 0.1,
-        ease: [0.16, 1, 0.3, 1],
-      }}
-      style={{
-        perspective: 800,
-      }}
+      style={{ opacity: 0, perspective: 800 }}
     >
       <motion.div
         className="relative bg-punk-gray border-4 border-punk-black overflow-hidden"
@@ -175,6 +181,6 @@ export default function ProductCard({ product, onDragToCart, index = 0 }) {
           </svg>
         </motion.div>
       )}
-    </motion.div>
+    </div>
   );
 }
